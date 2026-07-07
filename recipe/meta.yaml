@@ -1,5 +1,5 @@
 {% set versions = {
-    "0.0.0": "REPLACE_WITH_SHA256"
+    "3.5.0": "30a2536e0c8f47d633ecf3b4d51ec9924af54538e492470ad47b4ed34342f063"
 } %}
 
 {% set version = environ.get('COMMIT_VERSION', None) %}
@@ -13,36 +13,50 @@ package:
   version: {{ environ.get('ANACONDA_VERSION', version)|replace("-", ".") }}
 
 source:
-  url: "https://github.com/delphes/delphes/archive/refs/tags/{{ version }}.tar.gz"   # TODO: confirm upstream's actual tag/tarball naming
+  url: "https://github.com/delphes/delphes/archive/refs/tags/{{ version }}.tar.gz"
   {% if versions.get(version, None) %}
   sha256: {{ versions.get(version) }}
   {% endif %}
+  patches:
+    # macOS build fix -- keep even though linux-only for now, cheap to carry
+    - Delphes-ClosestPair2D-fwdDeclaration.patch
+    # std::binary_function was removed in C++17; needed for modern compilers
+    - remove_binary_function.patch
 
 build:
+  skip: true  # [win]
   number: 0
-  run_exports:
-    - {{ pin_subpackage(name, max_pin="x.x.x") }}
 
 requirements:
   build:
-    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ stdlib('c') }}
     - cmake
     - make
   host:
-    # TODO: library dependencies
-  run:
-    # TODO: runtime dependencies
+    # hep-forge's own root/pythia builds -- NOT conda-forge's root_base, see
+    # feedback-use-local-root-not-root-base memory
+    - root
+    - pythia
 
 test:
+  requires:
+    - {{ compiler('cxx') }}
+    - root
+    - pythia
   commands:
-    - echo "TODO: a real smoke test"
+    - test -f $PREFIX/bin/DelphesROOT
+    - test -f $PREFIX/lib/libDelphes${SHLIB_EXT}
 
 about:
   home: "https://github.com/delphes/delphes"
   license: "GPL-3.0-or-later"
+  license_file: COPYING
   summary: "Delphes: fast multipurpose detector response simulation"
+  description: |
+    Delphes is a C++ framework for fast multipurpose detector response
+    simulation, covering tracking, calorimetry, and a muon system, with
+    output to standard formats (LHEF, HepMC).
 
 extra:
   recipe-maintainers:
