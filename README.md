@@ -13,12 +13,7 @@ Delphes: fast multipurpose detector response simulation
 
 ## Architectures
 
-| Architecture | Latest published |
-|--------------|------------------|
-| linux-amd64 (`linux-64`) | ✅ `3.5.0` |
-| linux-arm64 (`linux-aarch64`) | ✅ `3.5.0` |
-
-_As of the last feedstock render; the badges above are live._
+State per architecture: see the platforms badge above or [anaconda.org/hep-forge/delphes](https://anaconda.org/hep-forge/delphes).
 
 
 ## Install
