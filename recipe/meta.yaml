@@ -22,7 +22,10 @@ source:
     # macOS build fix -- keep even though linux-only for now, cheap to carry
     - Delphes-ClosestPair2D-fwdDeclaration.patch
     # std::binary_function was removed in C++17; needed for modern compilers
+    # upstream since 3.5.1
+    {% if version == "3.5.0" %}
     - remove_binary_function.patch
+    {% endif %}
 
 build:
   skip: true  # [win]
