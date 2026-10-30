@@ -15,8 +15,8 @@ Delphes: fast multipurpose detector response simulation
 
 | Architecture | Latest published |
 |--------------|------------------|
-| linux-amd64 (`linux-64`) | ✅ `3.5.0` |
-| linux-arm64 (`linux-aarch64`) | ✅ `3.5.0` |
+| linux-amd64 (`linux-64`) | ✅ `3.5.1` |
+| linux-arm64 (`linux-aarch64`) | ✅ `3.5.1` |
 
 _As of the last feedstock render; the badges above are live._
 
