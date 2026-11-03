@@ -16,10 +16,10 @@ if echo 'int main(){}' | ${CXX} -x c++ -Werror -Wno-error=template-body -c -o /d
 fi
 
 # upstream 3.5.0 declares cmake_minimum_required < 3.5, which CMake 4 rejects
-# std::back_inserter is used without <iterator>; libstdc++ pulls it in
-# through other headers, libc++ does not.
+# std::back_inserter, std::prev_permutation and std::getenv are used without
+# their headers; libstdc++ pulls them in through others, libc++ does not.
 if [[ "$(uname)" == "Darwin" ]]; then
-    export CXXFLAGS="${CXXFLAGS} -include iterator"
+    export CXXFLAGS="${CXXFLAGS} -include iterator -include algorithm"
 fi
 
 cmake ${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX="${PREFIX}" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DPYTHIA8_DATA=$(pythia8-config --datadir) -S . -B build
