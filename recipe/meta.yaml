@@ -50,13 +50,16 @@ requirements:
     # hep-forge's own root/pythia builds -- NOT conda-forge's root_base, see
     # feedback-use-local-root-not-root-base memory
     - root
-    - pythia
-
+    # pythia on Linux; on macOS ROOT is conda-forge's, which needs conda-forge's
+    # pythia8 (hep-forge pythia declares pythia8 <0 and cannot sit next to it)
+    - pythia  # [linux]
+    - pythia8 >=8.3  # [osx]
 test:
   requires:
     - {{ compiler('cxx') }}
     - root
-    - pythia
+    - pythia  # [linux]
+    - pythia8 >=8.3  # [osx]
   commands:
     - test -f $PREFIX/bin/DelphesROOT
     - test -f $PREFIX/lib/libDelphes${SHLIB_EXT}
